@@ -2,8 +2,51 @@
 $(document).ready(function () {
 	var reward_table = [];
 	var txns;
+
 	$.getJSON( "https://rest.zslp.org/v2/address/transactions/t1ZefiGenesisBootstrapBURNxxxyfs71k", function( json ) {
     txns = json["txs"];
+
+		var block_change = 846490;
+//		var block_change = 840090;
+		var more_blocks = 10;
+		var latest_block = txns[0].blockheight;
+
+		if (latest_block > block_change) {
+			if ((latest_block % 10) == 0) {
+				more_blocks = 10;
+			} else {
+				more_blocks = latest_block % 10;
+			}
+
+			var after = latest_block - block_change;
+			console.log(after);
+			var rounds = Math.floor(after / 10);
+			console.log(rounds);
+			var rewards = 2000 - rounds;
+			console.log(rewards)
+			$('#rate').html(rewards);
+
+		} else {
+			more_blocks = block_change - latest_block;
+		}
+		var moreSeconds = (more_blocks) * 70;
+
+		var counterTime = new Date()
+		var secondsSinceEpoch = counterTime.getSeconds();
+
+
+
+		counterTime.setSeconds(secondsSinceEpoch + moreSeconds);
+		$('#counter').countdown({
+			until: counterTime,
+			serverSync: Date.now(),
+			layout: '<div id="counter_bkg"><span class="marg"></span><span class="num{d100}"></span><span class="num{d10}"></span><span class="num{d1}"></span><span class="sep"></span><span class="num{h10}"></span><span class="num{h1}"></span><span class="sep"></span><span class="num{m10}"></span><span class="num{m1}"></span><span class="sep"></span><span class="num{s10}"></span><span class="num{s1}"></span><span class="marg"></span></div><ul class="labels"><li class="lrg">{dl}</li><li>{hl}</li><li>{ml}</li><li>{sl}</li></ul><div id="glass"></div> ',
+			expiryText:'<div class="expiry">' + counterExpiryText + '</div>',
+			alwaysExpire: true
+		});
+
+
+
 		var txnlen = txns.length;
 		for (var i = 0; i < txnlen; i++) {
 				var reward = []
@@ -13,7 +56,29 @@ $(document).ready(function () {
 					if ( txns[i].vout[j].scriptPubKey.addresses[0] === "t1ZefiGenesisBootstrapBURNxxxyfs71k"){
 						reward[1] = txns[i].vout[j].value
 						var credit = parseFloat(reward[1])
-						credit = credit * 2000;
+
+
+
+						var block_change = 846490;
+			//			var block_change = 840090;
+						var more_blocks = 10;
+						var latest_block = txns[i].blockheight;
+						var rate = 2000;
+						if (latest_block > block_change) {
+							if ((latest_block % 10) == 0) {
+								more_blocks = 10;
+							} else {
+								more_blocks = latest_block % 10;
+							}
+							var after = latest_block - block_change;
+							var rounds = Math.floor(after / 10);
+							rate = 2000 - rounds;
+
+						}
+
+
+
+						credit = credit * rate;
 						credit = credit.toString();
 						reward[2] = credit;
 					}
@@ -32,18 +97,8 @@ $(document).ready(function () {
 
 		}
 
-		console.log(reward_table);
  	});
 
-	var counterData = choose_mounth + " " + choose_day +", "+ choose_year;
-	var counterTime = new Date(counterData + " " + choose_hour);
-	$('#counter').countdown({
-	until: counterTime,
-	serverSync: Date.now(),
-	layout: '<div id="counter_bkg"><span class="marg"></span><span class="num{d100}"></span><span class="num{d10}"></span><span class="num{d1}"></span><span class="sep"></span><span class="num{h10}"></span><span class="num{h1}"></span><span class="sep"></span><span class="num{m10}"></span><span class="num{m1}"></span><span class="sep"></span><span class="num{s10}"></span><span class="num{s1}"></span><span class="marg"></span></div><ul class="labels"><li class="lrg">{dl}</li><li>{hl}</li><li>{ml}</li><li>{sl}</li></ul><div id="glass"></div> ',
-	expiryText:'<div class="expiry">' + counterExpiryText + '</div>',
-	alwaysExpire: true
-	});
 
 
 	$('.msg').hide();
@@ -53,7 +108,6 @@ $(document).ready(function () {
 	$("body").addClass(choose_background );
 	$("body").addClass(choose_style);
 	$("<style>#counter_bkg { background-color: " + choose_numbers_color + ";}#counter span{background-image: url(" + url_number_style + ");}</style>").appendTo("head");
-	$("span.date").text(counterData);
 
 	if (choose_background == "image") {
 		// Slideshow for Background Slideshow theme
