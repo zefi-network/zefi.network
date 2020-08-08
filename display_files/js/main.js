@@ -10,18 +10,18 @@ $(document).ready(function () {
 
 			var block_change = 846490;
 	//		var block_change = 840090;
-			var more_blocks = 10;
+			var more_blocks = 50;
 
 
 			if (latest_block > block_change) {
-				if ((latest_block % 10) == 0) {
-					more_blocks = 10;
+				if ((latest_block % 50) == 0) {
+					more_blocks = 50;
 				} else {
-					more_blocks = latest_block % 10;
+					more_blocks = latest_block % 50;
 				}
 
 				var after = latest_block - block_change;
-				var rounds = Math.floor(after / 10);
+				var rounds = Math.floor(after / 50);
 				var rewards = 2000 - rounds;
 				$('#rate').html(rewards);
 
@@ -59,16 +59,17 @@ $(document).ready(function () {
 
 							var block_change = 846490;
 				//			var block_change = 840090;
-							var more_blocks = 10;
+							var more_blocks = 50;
 							var rate = 2000;
-							if (latest_block > block_change) {
-								if ((latest_block % 10) == 0) {
-									more_blocks = 10;
+							console.log(txns[i].blockheight);
+							if (txns[i].blockheight > block_change) {
+								if ((txns[i].blockheight % 50) == 0) {
+									more_blocks = 50;
 								} else {
-									more_blocks = latest_block % 10;
+									more_blocks = txns[i].blockheight % 50;
 								}
-								var after = latest_block - block_change;
-								var rounds = Math.floor(after / 10);
+								var after = txns[i].blockheight - block_change;
+								var rounds = Math.floor(after / 50);
 								rate = 2000 - rounds;
 							}
 
