@@ -9,25 +9,15 @@ $(document).ready(function () {
 	    txns = json["txs"];
 
 			var block_change = 846490;
-	//		var block_change = 840090;
-			var more_blocks = 50;
+			var block_end = 879640;
 
 
-			if (latest_block > block_change) {
-				if ((latest_block % 50) == 0) {
-					more_blocks = 50;
-				} else {
-					more_blocks = latest_block % 50;
-				}
+			var after = latest_block - block_change;
+			var rounds = Math.floor(after / 50);
+			var rewards = 2000 - rounds;
+			$('#rate').html(rewards);
 
-				var after = latest_block - block_change;
-				var rounds = Math.floor(after / 50);
-				var rewards = 2000 - rounds;
-				$('#rate').html(rewards);
-
-			} else {
-				more_blocks = block_change - latest_block;
-			}
+			var more_blocks = block_end - latest_block
 			var moreSeconds = (more_blocks) * 70;
 
 			var counterTime = new Date();
