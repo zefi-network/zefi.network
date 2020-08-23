@@ -41,7 +41,7 @@ $(document).ready(function () {
 			    reward[0] = txns[i].vin[0].addr
 					var voutlen = txns[i].vout.length;
 					for (var j=0; j < voutlen; j++){
-						if ( txns[i].vout[j].scriptPubKey.addresses[0] === "t1ZefiGenesisBootstrapBURNxxxyfs71k"){
+						if (txns[i].vout[j].scriptPubKey.addresses && txns[i].vout[j].scriptPubKey.addresses[0] === "t1ZefiGenesisBootstrapBURNxxxyfs71k"){
 							reward[1] = txns[i].vout[j].value
 							var credit = parseFloat(reward[1])
 
